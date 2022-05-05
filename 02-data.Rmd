@@ -1,2 +1,27 @@
 # Data sources
 
+## 2. Data sources
+
+1. The data is from the NYC Open data website. It is a New York City Department of Education 2020 - 2021 School Quality Report Results for High School. This data has 487 rows which represent for each high school in NYC and 391 columns represent for detailed indicators showing the quality of education, including dbn, enrollment, feedback of students, curriculum, SAT scores, ACT scores, graduation rates, etc.
+
+Link: https://data.cityofnewyork.us/Education/2020-2021-School-Quality-Reports-High-School/26je-vkp6 
+
+
+2. This data shows the rank of high school in NYC offered by SchoolDIgger. We could filter the data for each year from 2005-2006 to 2018-2019. There are 14-years of data in total. By combining this data with the first data, we know the ranking of each school and the information that makes up the ranking, which makes it easier to analyze the difference between high and low ranking
+
+Link: https://www.schooldigger.com/go/NY/schoolrank.aspx?level=3 
+
+
+3. The data is from the NYC Open data website. It is a daily listing of students enrolled, present, absent or released statistical count by and school. We used to analyze the effect of Covid-19 on attendance.
+
+Link: https://data.cityofnewyork.us/Education/2018-2021-Daily-Attendance-by-School/xc44-2jrh
+
+
+4. This data is Covid-19 trends data by day offered by NYC Official Website, and it is  also an open data on Github. We will use the trend graph of covid to compare high school attendance and analyze whether covid has an effect on attendance
+
+Link: https://github.com/nychealth/coronavirus-data/blob/master/trends/data-by-day.csv
+
+
+5. This data shows the Boundaries of School Districts in NYC from the NYC Open data website. And we will use this data to show the geographic distribution.
+
+Link：https://data.cityofnewyork.us/Education/NYC-School-District-Boundaries/p5vh-vm7p
