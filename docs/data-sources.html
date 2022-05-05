@@ -81,7 +81,9 @@
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation<span></span></a></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a>
 <ul>
-<li class="chapter" data-level="4.0.1" data-path="missing-values.html"><a href="missing-values.html#by-value"><i class="fa fa-check"></i><b>4.0.1</b> 4.3 By value<span></span></a></li>
+<li class="chapter" data-level="4.1" data-path="missing-values.html"><a href="missing-values.html#by-row"><i class="fa fa-check"></i><b>4.1</b> By Row<span></span></a></li>
+<li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#by-column"><i class="fa fa-check"></i><b>4.2</b> By column<span></span></a></li>
+<li class="chapter" data-level="4.3" data-path="missing-values.html"><a href="missing-values.html#by-value"><i class="fa fa-check"></i><b>4.3</b> By value<span></span></a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a>
 <ul>
@@ -94,9 +96,9 @@
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion<span></span></a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="conclusion.html"><a href="conclusion.html#summary-of-studies-of-the-datasets"><i class="fa fa-check"></i><b>7.1</b> summary of studies of the datasets<span></span></a></li>
-<li class="chapter" data-level="7.2" data-path="conclusion.html"><a href="conclusion.html#limitation"><i class="fa fa-check"></i><b>7.2</b> Limitation：<span></span></a></li>
-<li class="chapter" data-level="7.3" data-path="conclusion.html"><a href="conclusion.html#future-directions"><i class="fa fa-check"></i><b>7.3</b> Future directions:<span></span></a></li>
-<li class="chapter" data-level="7.4" data-path="conclusion.html"><a href="conclusion.html#lessons-learned"><i class="fa fa-check"></i><b>7.4</b> Lessons Learned:<span></span></a></li>
+<li class="chapter" data-level="7.2" data-path="conclusion.html"><a href="conclusion.html#limitation"><i class="fa fa-check"></i><b>7.2</b> Limitation<span></span></a></li>
+<li class="chapter" data-level="7.3" data-path="conclusion.html"><a href="conclusion.html#future-directions"><i class="fa fa-check"></i><b>7.3</b> Future directions<span></span></a></li>
+<li class="chapter" data-level="7.4" data-path="conclusion.html"><a href="conclusion.html#lessons-learned"><i class="fa fa-check"></i><b>7.4</b> Lessons Learned<span></span></a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -119,27 +121,18 @@
             <section class="normal" id="section-">
 <div id="data-sources" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Data sources<a href="data-sources.html#data-sources" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Data sources</p>
 <ol style="list-style-type: decimal">
-<li>The data is from the NYC Open data website. It is a New York City Department of Education 2020 - 2021 School Quality Report Results for High School. This data has 487 rows which represent for each high school in NYC and 391 columns represent for detailed indicators showing the quality of education, including dbn, enrollment, feedback of students, curriculum, SAT scores, ACT scores, graduation rates, etc.</li>
+<li><p>The data is from the NYC Open data website. It is a New York City Department of Education 2020 - 2021 School Quality Report Results for High School. This data has 487 rows which represent for each high school in NYC and 391 columns represent for detailed indicators showing the quality of education, including dbn, enrollment, feedback of students, curriculum, SAT scores, ACT scores, graduation rates, etc.</p>
+<p>Link: <a href="https://data.cityofnewyork.us/Education/2020-2021-School-Quality-Reports-High-School/26je-vkp6" class="uri">https://data.cityofnewyork.us/Education/2020-2021-School-Quality-Reports-High-School/26je-vkp6</a></p></li>
+<li><p>This data shows the rank of high school in NYC offered by SchoolDIgger. We could filter the data for each year from 2005-2006 to 2018-2019. There are 14-years of data in total. By combining this data with the first data, we know the ranking of each school and the information that makes up the ranking, which makes it easier to analyze the difference between high and low ranking</p>
+<p>Link: <a href="https://www.schooldigger.com/go/NY/schoolrank.aspx?level=3" class="uri">https://www.schooldigger.com/go/NY/schoolrank.aspx?level=3</a></p></li>
+<li><p>The data is from the NYC Open data website. It is a daily listing of students enrolled, present, absent or released statistical count by and school. We used to analyze the effect of Covid-19 on attendance.</p>
+<p>Link: <a href="https://data.cityofnewyork.us/Education/2018-2021-Daily-Attendance-by-School/xc44-2jrh" class="uri">https://data.cityofnewyork.us/Education/2018-2021-Daily-Attendance-by-School/xc44-2jrh</a></p></li>
+<li><p>This data is Covid-19 trends data by day offered by NYC Official Website, and it is also an open data on Github. This data includes daily covid infections in New York from 2020 to the present. We only select the data in 2020 to create a time series graph of Covid to compare high school attendance and analyze whether Covid has an effect on attendance</p>
+<p>Link: <a href="https://github.com/nychealth/coronavirus-data/blob/master/trends/data-by-day.csv" class="uri">https://github.com/nychealth/coronavirus-data/blob/master/trends/data-by-day.csv</a></p></li>
+<li><p>This data shows the Boundaries of School Districts in NYC from the NYC Open data website. And we will use this data to show the geographic distribution.</p>
+<p>Link：<a href="https://data.cityofnewyork.us/Education/NYC-School-District-Boundaries/p5vh-vm7p" class="uri">https://data.cityofnewyork.us/Education/NYC-School-District-Boundaries/p5vh-vm7p</a></p></li>
 </ol>
-<p>Link: <a href="https://data.cityofnewyork.us/Education/2020-2021-School-Quality-Reports-High-School/26je-vkp6" class="uri">https://data.cityofnewyork.us/Education/2020-2021-School-Quality-Reports-High-School/26je-vkp6</a></p>
-<ol start="2" style="list-style-type: decimal">
-<li>This data shows the rank of high school in NYC offered by SchoolDIgger. We could filter the data for each year from 2005-2006 to 2018-2019. There are 14-years of data in total. By combining this data with the first data, we know the ranking of each school and the information that makes up the ranking, which makes it easier to analyze the difference between high and low ranking</li>
-</ol>
-<p>Link: <a href="https://www.schooldigger.com/go/NY/schoolrank.aspx?level=3" class="uri">https://www.schooldigger.com/go/NY/schoolrank.aspx?level=3</a></p>
-<ol start="3" style="list-style-type: decimal">
-<li>The data is from the NYC Open data website. It is a daily listing of students enrolled, present, absent or released statistical count by and school. We used to analyze the effect of Covid-19 on attendance.</li>
-</ol>
-<p>Link: <a href="https://data.cityofnewyork.us/Education/2018-2021-Daily-Attendance-by-School/xc44-2jrh" class="uri">https://data.cityofnewyork.us/Education/2018-2021-Daily-Attendance-by-School/xc44-2jrh</a></p>
-<ol start="4" style="list-style-type: decimal">
-<li>This data is Covid-19 trends data by day offered by NYC Official Website, and it is also an open data on Github. We will use the trend graph of covid to compare high school attendance and analyze whether covid has an effect on attendance</li>
-</ol>
-<p>Link: <a href="https://github.com/nychealth/coronavirus-data/blob/master/trends/data-by-day.csv" class="uri">https://github.com/nychealth/coronavirus-data/blob/master/trends/data-by-day.csv</a></p>
-<ol start="5" style="list-style-type: decimal">
-<li>This data shows the Boundaries of School Districts in NYC from the NYC Open data website. And we will use this data to show the geographic distribution.</li>
-</ol>
-<p>Link：<a href="https://data.cityofnewyork.us/Education/NYC-School-District-Boundaries/p5vh-vm7p" class="uri">https://data.cityofnewyork.us/Education/NYC-School-District-Boundaries/p5vh-vm7p</a></p>
 
 </div>
             </section>

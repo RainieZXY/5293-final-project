@@ -6,24 +6,17 @@ This section we will show other factors might cause the gap of the quality of ed
 
 	•	Enrollment: Total number of students in each school.
 	
-	
 	•	Survey: Average of Percent Positive of each question in the survey.
-	
 	
 	•	Principal_experience: Years of principal experience at this school.
 	
-	
 	•	Teach_3_more_exp: Percent of teachers with 3 or more years of experience.
-	
 	
 	•	Grad_rate: Graduation rate of students in each school.
 	
-	
 	•	Val_pct_cpci_all: College and Career Preparatory Course Index
 	
-	
 	•	BoroughName: The borough that the school located in.
-	
 	
 	•	Top: The ranking level.
 

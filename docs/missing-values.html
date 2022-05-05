@@ -81,7 +81,9 @@
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation<span></span></a></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a>
 <ul>
-<li class="chapter" data-level="4.0.1" data-path="missing-values.html"><a href="missing-values.html#by-value"><i class="fa fa-check"></i><b>4.0.1</b> 4.3 By value<span></span></a></li>
+<li class="chapter" data-level="4.1" data-path="missing-values.html"><a href="missing-values.html#by-row"><i class="fa fa-check"></i><b>4.1</b> By Row<span></span></a></li>
+<li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#by-column"><i class="fa fa-check"></i><b>4.2</b> By column<span></span></a></li>
+<li class="chapter" data-level="4.3" data-path="missing-values.html"><a href="missing-values.html#by-value"><i class="fa fa-check"></i><b>4.3</b> By value<span></span></a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a>
 <ul>
@@ -94,9 +96,9 @@
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion<span></span></a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="conclusion.html"><a href="conclusion.html#summary-of-studies-of-the-datasets"><i class="fa fa-check"></i><b>7.1</b> summary of studies of the datasets<span></span></a></li>
-<li class="chapter" data-level="7.2" data-path="conclusion.html"><a href="conclusion.html#limitation"><i class="fa fa-check"></i><b>7.2</b> Limitation：<span></span></a></li>
-<li class="chapter" data-level="7.3" data-path="conclusion.html"><a href="conclusion.html#future-directions"><i class="fa fa-check"></i><b>7.3</b> Future directions:<span></span></a></li>
-<li class="chapter" data-level="7.4" data-path="conclusion.html"><a href="conclusion.html#lessons-learned"><i class="fa fa-check"></i><b>7.4</b> Lessons Learned:<span></span></a></li>
+<li class="chapter" data-level="7.2" data-path="conclusion.html"><a href="conclusion.html#limitation"><i class="fa fa-check"></i><b>7.2</b> Limitation<span></span></a></li>
+<li class="chapter" data-level="7.3" data-path="conclusion.html"><a href="conclusion.html#future-directions"><i class="fa fa-check"></i><b>7.3</b> Future directions<span></span></a></li>
+<li class="chapter" data-level="7.4" data-path="conclusion.html"><a href="conclusion.html#lessons-learned"><i class="fa fa-check"></i><b>7.4</b> Lessons Learned<span></span></a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -120,20 +122,20 @@
 <div id="missing-values" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Missing values<a href="missing-values.html#missing-values" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>There are four dataset used in our project, but only one of them, dataset 1, exist missing value. Some variable shows “No Data”. In this part, we will focus on them. Since we are interested in the fairness of the quality of High School education in NYC and there are 391 columns in the dataset which shows most of the details of the each school, we will only analyze a part of them that we might used later.</p>
-<div id="by-row" class="section level4 hasAnchor" number="4.0.0.1">
-<h4><span class="header-section-number">4.0.0.1</span> 4.1 By Row<a href="missing-values.html#by-row" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="by-row" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> By Row<a href="missing-values.html#by-row" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We first consider the missing value by row.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <p>From the graph above, we could find that over 60% of rows have 4 columns missing, nearly 25% of rows have 8 columns missing. There exist few rows with nearly half of the missing value. Only 12.5% of rows are complete cases.</p>
 </div>
-<div id="by-column" class="section level4 hasAnchor" number="4.0.0.2">
-<h4><span class="header-section-number">4.0.0.2</span> 4.2 By column<a href="missing-values.html#by-column" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="by-column" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> By column<a href="missing-values.html#by-column" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Then, We analyze the missing value by column.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <p>From the missing patterns above, there are 4 columns(about val_mean of act score) with nearly 90% of missing value, and another 4 columns(about n_mean of act score) have around 65% of missing value. And we could also find that it seems like if “n_mean of act score” variables are missing, then “val_mean of act score” will be missing.</p>
 </div>
-<div id="by-value" class="section level3 hasAnchor" number="4.0.1">
-<h3><span class="header-section-number">4.0.1</span> 4.3 By value<a href="missing-values.html#by-value" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="by-value" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> By value<a href="missing-values.html#by-value" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In this part, we try to find whether the value of some variable will help us predict missing in other columns.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>It seems like there is a relationship between ACT scores and districts. Staten Island has less missing value, than other 4 districts. And the higher mean score is, the more missing value will be.</p>
