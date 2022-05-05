@@ -1,1 +1,85 @@
 # Missing values
+
+```{R, echo = F}
+library(tidyverse)
+library(naniar)
+library(ggplot2)
+library(redav)
+```
+
+```{r, echo = F}
+missing_value <- read_csv("Missing Value.csv")
+```
+
+There are four dataset used in our project, but only one of them, dataset 1, exist missing value. Some variable shows "No Data". In this part, we will focus on them. Since we are interested in the fairness of the quality of High School education in NYC and there are 391 columns in the dataset which shows most of the details of the each school, we will only analyze a part of them that we might used later.
+
+## By Row
+
+We first consider the missing value by row.
+
+```{r}
+#rowSums(is.na(missing_value)) %>%sort(decreasing = TRUE)
+
+tidydata <- missing_value %>% 
+    gather(key, value, -dbn) %>% 
+    mutate(missing = ifelse(is.na(value), "yes", "no"))
+```
+
+```{r}
+rowdata <- data.frame(t(missing_value))
+gg_miss_var(rowdata)+ ggtitle("Missing row values in the dataset rows sorted by count") +xlab("Rows")
+plot_missing(missing_value)
+```
+
+From the graph above, we could find that over 60% of rows have 4 columns missing, nearly 25% of rows have 8 columns missing. There exist few rows with nearly half of the missing value. Only 12.5% of rows are complete cases. 
+
+## By column
+
+Then, We analyze the missing value by column.
+
+```{r}
+#colSums(is.na(missing_value)) %>%sort(decreasing = TRUE)
+vis_miss(missing_value) + ggtitle("Missing column values of the dataset") + xlab("Columns")
+gg_miss_var(missing_value)+ ggtitle("Missing column values of the dataset sorted by count") + xlab("Columns")
+```
+
+From the missing patterns above, there are 4 columns(about val_mean of act score) with nearly 90% of missing value, and another 4 columns(about n_mean of act score) have around 65% of missing value. And we could also find that it seems like if "n_mean of act score" variables are missing, then "val_mean of act score" will be missing. 
+
+## By value
+
+In this part, we try to find whether the value of some variable will help us predict missing in other columns.
+
+```{r}
+data_value <- missing_value %>% mutate(Borough = str_sub(dbn, 3, 3))%>%
+  mutate(BoroughName = fct_recode(Borough, 
+                                      Manhattan = "M",
+                                      Brooklyn = "K", 
+                                      Queens = "Q", 
+                                      `The Bronx` = "X",
+                                      `Staten Island` = "R"))%>%
+  select(dbn,BoroughName,n_mean_act_engl:val_mean_act_scie)%>%select(dbn,BoroughName,starts_with("n"),starts_with("val"))
+  
+percent_missing <- data_value %>% group_by(BoroughName) %>% 
+  summarize(num_schools = n(), num_na = sum(is.na(val_mean_act_engl))) %>% 
+  mutate(percent_na = round(num_na/num_schools, 2)) %>%arrange(-percent_na)
+
+dfsum <- data_value %>% group_by(BoroughName) %>% 
+  summarize(English = round(mean(val_mean_act_engl, na.rm = TRUE), 1), 
+            Math = round(mean(val_mean_act_math, na.rm = TRUE), 1),
+            Reading = round(mean(val_mean_act_read, na.rm = TRUE), 1),
+            Science = round(mean(val_mean_act_scie, na.rm = TRUE), 1)) %>%
+  left_join(percent_missing %>% select(BoroughName, percent_na), 
+            by = "BoroughName") %>% 
+  arrange(desc(percent_na))
+
+dfsumtidy <-  dfsum %>% pivot_longer(cols = English:Science, 
+                                     names_to = "subject",
+                                     values_to = "ACT_meanscore")
+ggplot(dfsumtidy, aes(ACT_meanscore, percent_na, color = BoroughName)) + geom_point(size = 2) + facet_wrap(~subject) + theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+It seems like there is a relationship between ACT scores and districts. Staten Island has less missing value, than other 4 districts. And the higher mean score is, the more missing value will be.
+
+To sum up, ACT score variables contain most of the missing value and missing value of other variables will not influence the analysis of our problem. Then we will use other exam grades to analyze the varying of High School education.
+

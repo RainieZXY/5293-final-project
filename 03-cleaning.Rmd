@@ -1,1 +1,4 @@
 # Data transformation
+
+Since the datasets are stored in a .csv file, we can simply read the file using the read.csv method. When we need to do manipulation on data, we will use dplyr to help us solve the most data manipulation challenges like cleaning data, adding columns, transforming rows and columns, etc. Of course, when the operation is not so complicated, we will also consider using Base R.
+

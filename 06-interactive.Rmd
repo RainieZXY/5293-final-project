@@ -1,3 +1,55 @@
 # Interactive component
 
 
+This section we will show other factors might cause the gap of the quality of education in varying ranking level of schools. We randomly select 10 schools in each level and use following factors: 
+
+	•	Enrollment: Total number of students in each school.
+	
+	•	Survey: Average of Percent Positive of each question in the survey.
+	
+	•	Principal_experience: Years of principal experience at this school.
+	
+	•	Teach_3_more_exp: Percent of teachers with 3 or more years of experience.
+	
+	•	Grad_rate: Graduation rate of students in each school.
+	
+	•	Val_pct_cpci_all: College and Career Preparatory Course Index
+	
+	•	BoroughName: The borough that the school located in.
+	
+	•	Top: The ranking level.
+
+
+```{r}
+interact <-q2%>%
+  select(dbn, enrollment, survey, Principal_experience, Teach_3_more_exp, grad_rate, val_pct_cpci_all, BoroughName, Top)
+
+set.seed(5293)
+x <- sample(11:50,10,replace = F)
+y <- sample(51:100,10,replace = F)
+z <- sample(101:nrow(interact),10,replace = F)
+n <- c(1:10,x,y,z)
+
+interact <- interact[n,]%>%
+  mutate(Top = factor(Top,levels=c("Top 10","Top 50","Top 100","Over 100")))
+
+parcoords(interact
+          , rownames = F
+          , brushMode = "1D-axes"
+          , reorderable = T
+          , queue = T
+          , color = list(
+            colorBy = "Top"
+            ,colorScale = "scaleOrdinal"
+            ,colorScheme = c("green","red","blue","black")
+            ,colorDomain = c("Top 10","Top 50","Top 100","Over 100")
+            )
+          , withD3 = TRUE
+          )
+```
+
+outlier：
+“Enrollment” has upper outliers from high-ranking schools, “survey” has lower outliers from high-ranking schools, “Val_pct_cpci_all” has lower outliers from low-ranking schools.
+
+distribution：
+Over 75% of schools has less than 1500 students. Most of survey Percent Positive is larger than 0.8, meaning that most students have a high opinion of the school. Years of principal experience is mainly concentrated below 12.5. Most of schools has 80% of teachers with 3 or more years of experience. Nearly all of the school have over 80% of graduation rate. The higher the ranking level, the higher CPCI index it is, meaning that high-ranking schools are more emphasis on College and Career Preparatory education.

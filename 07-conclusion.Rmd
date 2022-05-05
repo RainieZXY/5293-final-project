@@ -1,2 +1,32 @@
 # Conclusion
 
+## summary of studies of the datasets
+
+Based on the analysis above, we could do a brief summary as following. 
+
+1. The geographic distribution and the density of high schools in NYC is not evenly. The Richmond County has the fewest educational resources. No.2 school district has the most educational resources located on the Manhattan County. Also, No.2 school district has more High-ranking schools than any other school districts. 
+
+2. High-ranking high schools make students more likely to be admitted to a better college, since students are more likely obtain high SAT scores. And there will be such a significant difference because of varying levels of ranking. The higher the ranking level, the larger educational quality gap between schools, the more that school emphasis on College and Career Preparatory education, the more experience teachers in the school, the higher graduation rate, etc. 
+
+3. Covid does have an impact on attendance, especially in March and April when there is a sharp increase in the number of confirmed cases. Some high schools have an average attendance rate of less than 70% in February, March and April, and some schools have an average attendance rate of only 40%, which means that only half of the students come to class during these three months. This shows that Covid has a great impact on students
+
+
+## Limitation：
+
+We used five datasets to analyze New York high schools. Each of these five datasets includes a very large amount of information. However, in our analysis, we did not use all of the data, but rather picked out the data that we thought would be useful or relevant to the problem we were trying to solve. This may have some limitations in the analysis.
+
+When analyzing the impact of covid on attendance, we can only find attendance data from 2018 to 2020, but Covid is from the end of 2019 to now, if we can use data from 2018 to 2021, I believe we can know more specifically how much Covid affects attendance.
+
+Also when analyzing how different schools are ranked, we only have the average of SAT scores for each school, not for each student. The boxplot that comes out this way may be biased, if a student has a very high sat score at an over100 school, but it is not reflected in a mean boxplot.
+
+
+## Future directions:
+
+We could focus more on the changes in school rankings, since we know that school rankings vary from year to year and different websites have different rankings. If we could have more Edu Quality Data to analyze, we could try to identify schools that have potential.
+
+
+## Lessons Learned:
+
+After completing this final project, we gained a better understanding of visualization we learned in this semester. We are very professional in using "dplyr" and "base r" now. By using the data processing skills we learned, we cleaned up our datasets through dealing with NAs, removed some data we didn't need, merged two data, converted the data types and added some columns for our analysis. For the main part of project, we have created many different types of diagrams that we have learned in the classes, such as histogram, choropleth map, boxplot, ridgeline plot, time series, and cleveland dot plot. These plots are very helpful in solving problems, and by drawing them, we can understand more about what was said in class, such as the color of the plots, the ordering, etc. We learned a lot of very important knowledge in this class that will help us in our future work and study. We really enjoyed the visualization process and this class!
+
+

@@ -52,6 +52,10 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/parallel-coordinates-2.1.8/parcoords.css" rel="stylesheet" />
+<script src="libs/parcoords-binding-1.0.0/parcoords.js"></script>
+<script src="libs/d3-5.16.0/d3.min.js"></script>
 
 
 
@@ -73,15 +77,27 @@
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources<span></span></a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#data-sources-1"><i class="fa fa-check"></i><b>2.1</b> 2. Data sources<span></span></a></li>
-</ul></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources<span></span></a></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation<span></span></a></li>
-<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a></li>
+<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="missing-values.html"><a href="missing-values.html#by-value"><i class="fa fa-check"></i><b>4.0.1</b> 4.3 By value<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#allocation-of-educational-resources-in-nyc"><i class="fa fa-check"></i><b>5.1</b> Allocation of Educational Resources in NYC<span></span></a></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#education-quality-distribution-in-nyc"><i class="fa fa-check"></i><b>5.2</b> Education Quality Distribution in NYC<span></span></a></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#the-impact-of-varying-ranking-high-school-education-quality"><i class="fa fa-check"></i><b>5.3</b> The Impact of Varying-ranking High School Education Quality<span></span></a></li>
+<li class="chapter" data-level="5.4" data-path="results.html"><a href="results.html#impact-of-covid-on-attendance"><i class="fa fa-check"></i><b>5.4</b> Impact of Covid on attendance<span></span></a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component<span></span></a></li>
-<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion<span></span></a></li>
+<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion<span></span></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="conclusion.html"><a href="conclusion.html#summary-of-studies-of-the-datasets"><i class="fa fa-check"></i><b>7.1</b> summary of studies of the datasets<span></span></a></li>
+<li class="chapter" data-level="7.2" data-path="conclusion.html"><a href="conclusion.html#limitation"><i class="fa fa-check"></i><b>7.2</b> Limitation：<span></span></a></li>
+<li class="chapter" data-level="7.3" data-path="conclusion.html"><a href="conclusion.html#future-directions"><i class="fa fa-check"></i><b>7.3</b> Future directions:<span></span></a></li>
+<li class="chapter" data-level="7.4" data-path="conclusion.html"><a href="conclusion.html#lessons-learned"><i class="fa fa-check"></i><b>7.4</b> Lessons Learned:<span></span></a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -103,6 +119,21 @@
             <section class="normal" id="section-">
 <div id="interactive-component" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Interactive component<a href="interactive-component.html#interactive-component" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This section we will show other factors might cause the gap of the quality of education in varying ranking level of schools. We randomly select 10 schools in each level and use following factors:
+• Enrollment: Total number of students in each school.
+• Survey: Average of Percent Positive of each question in the survey.
+• Principal_experience: Years of principal experience at this school.
+• Teach_3_more_exp: Percent of teachers with 3 or more years of experience.
+• Grad_rate: Graduation rate of students in each school.
+• Val_pct_cpci_all: College and Career Preparatory Course Index
+• BoroughName: The borough that the school located in.
+• Top: The ranking level.</p>
+<div class="parcoords html-widget" height="480" id="htmlwidget-74c6c6373d84d018e02d" style="width:672px;height:480px; position:relative; overflow-x:auto; overflow-y:hidden; max-width:100%;" width="672"></div>
+<script type="application/json" data-for="htmlwidget-74c6c6373d84d018e02d">{"x":{"data":{"names":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"],"dbn":["10X445","02M475","28Q687","13K430","02M416","02M418","02M545","14K449","03M541","02M411","13K595","32K168","01M539","24Q264","05M362","03M485","10X549","02M420","22K405","26Q430","25Q670","21K690","28Q440","24Q560","10X442","02M600","02M531","28Q686","28Q284","11X275","27Q351","07X600","23K514","03M307","15K656","18K567","10X434","17K751","08X405","02M305"],"enrollment":[2936,3342,511,5917,546,698,403,808,452,492,396,364,664,745,404,2717,466,1780,4109,4424,654,605,3775,460,456,1667,240,1065,364,498,301,444,142,372,954,278,398,280,997,349],"survey":[0.87,0.845,0.708333333333333,0.785,0.886666666666667,0.835,0.823333333333333,0.868333333333334,0.865,0.86,0.845,0.858333333333333,0.863333333333333,0.875,0.84,0.718333333333333,0.906666666666667,0.826666666666667,0.728333333333333,0.876666666666667,0.836666666666667,0.796666666666667,0.831666666666667,0.771666666666667,0.88,0.875,0.883333333333333,0.868333333333334,0.908333333333333,0.871666666666667,0.806666666666667,0.858333333333333,0.908333333333333,0.91,0.883333333333333,0.845,0.91,0.841666666666667,0.823333333333333,0.848333333333333],"Principal_experience":[0.9,1.1,4.8,4.6,13.1,9.2,18.2,2.2,8,17.4,11.3,10.2,1.2,9.2,10,2.1,14.2,12,8.1,8,5,10.8,2.2,6.1,8.4,11,5.6,5.1,5.6,3.5,1.6,9.2,14.7,12.6,5.1,9,14.2,1.6,6,7.1],"Teach_3_more_exp":[0.925,0.98,0.808,0.966,0.939,0.846,0.8,0.837,0.84,0.793,0.864,0.727,0.86,0.838,0.957,0.866,0.807,0.879,0.887,0.951,0.95,0.923,0.932,0.923,0.875,0.866,0.875,0.941,0.833,0.97,0.714,0.947,0.857,0.778,0.849,0.75,1,0.864,0.726,0.667],"grad_rate":[1,0.995516881522406,1,0.976189357290947,1,0.996829431438127,0.994705882352941,0.984320754716981,0.985857142857143,0.995748953974895,0.987148387096774,0.9356,0.992692307692308,0.973562130177515,0.969030927835052,0.990276767676768,0.890707423580786,0.963457142857143,0.965521042084168,0.939518202247191,0.90966472303207,0.87085843373494,0.915532004197272,0.974799145299145,0.989513368983957,0.947883720930233,0.982801724137931,0.903051383399209,0.989,0.84452,0.786310975609756,0.926862745098039,0.919290322580645,0.88852427184466,0.946389830508475,0.848405063291139,0.820073033707865,0.877153846153846,0.765915492957746,0.892578512396694],"val_pct_cpci_all":[1,1,1,0.998,1,0.924,1,0.994,0.959,1,0.97,0.917,0.97,0.966,1,0.991,0.908,0.902,0.941,0.82,0.668,0.701,0.714,0.983,0.989,0.931,0.982,0.788,0.995,0.701,0.422,0.95,0.538,0.939,0.839,0.381,0.451,0.855,0.334,0.842],"BoroughName":["Bronx","Manhattan","Queens","Kings","Manhattan","Manhattan","Manhattan","Kings","Manhattan","Manhattan","Kings","Kings","Manhattan","Queens","Manhattan","Manhattan","Bronx","Manhattan","Kings","Queens","Queens","Kings","Queens","Queens","Bronx","Manhattan","Manhattan","Queens","Queens","Bronx","Queens","Bronx","Kings","Manhattan","Kings","Kings","Bronx","Kings","Bronx","Manhattan"],"Top":["Top 10","Top 10","Top 10","Top 10","Top 10","Top 10","Top 10","Top 10","Top 10","Top 10","Top 50","Top 50","Top 50","Top 50","Top 50","Top 50","Top 50","Top 50","Top 50","Top 50","Top 100","Top 100","Top 100","Top 100","Top 100","Top 100","Top 100","Top 100","Top 100","Top 100","Over 100","Over 100","Over 100","Over 100","Over 100","Over 100","Over 100","Over 100","Over 100","Over 100"]},"options":{"rownames":false,"color":{"colorBy":"Top","colorScale":"scaleOrdinal","colorScheme":["green","red","blue","black"],"colorDomain":["Top 10","Top 50","Top 100","Over 100"]},"brushMode":"1D-axes","brushPredicate":"AND","reorderable":true,"margin":{"top":50,"bottom":50,"left":100,"right":50},"mode":"queue","bundlingStrength":0.5,"smoothness":0},"autoresize":false,"tasks":null},"evals":[],"jsHooks":[]}</script>
+<p>outlier：
+“Enrollment” has upper outliers from high-ranking schools, “survey” has lower outliers from high-ranking schools, “Val_pct_cpci_all” has lower outliers from low-ranking schools.</p>
+<p>distribution：
+Over 75% of schools has less than 1500 students. Most of survey Percent Positive is larger than 0.8, meaning that most students have a high opinion of the school. Years of principal experience is mainly concentrated below 12.5. Most of schools has 80% of teachers with 3 or more years of experience. Nearly all of the school have over 80% of graduation rate. The higher the ranking level, the higher CPCI index it is, meaning that high-ranking schools are more emphasis on College and Career Preparatory education.</p>
 
 </div>
             </section>

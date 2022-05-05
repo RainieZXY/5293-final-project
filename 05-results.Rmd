@@ -1,1 +1,351 @@
 # Results
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(sf)
+library(tmap)
+library(vcd)
+library(RColorBrewer)
+library(ggridges)
+library(parcoords)
+```
+
+## Allocation of Educational Resources in NYC 
+
+First, we will analyze the allocation of educational resources of high schools in NYC. There are several detailed questions we will focus: Which borough are most high schools located in? Based on the area of each county, is the school density the same? Is there difference of the average area a school need to cover? Is every school district having the same number of high schools?
+
+```{r}
+# data_school <- read_csv("C:/Users/D SUN/Documents/HighSchool.csv")
+# data_rank <- read_csv("C:/Users/D SUN/Documents/ranking.csv",skip = 4)%>%filter(County =="Bronx County"|County == "New York County"| County =="Richmond County"| County =="Kings County"| County =="Queens County")
+# shape <- read_sf("C:/Users/D SUN/Documents/NYC School District Boundaries/geo_export_2ef8ab78-2402-429f-834c-242c88017624.shp")
+
+data_school <- read_csv("HighSchool.csv")
+data_rank <- read_csv("ranking.csv",skip = 4)%>%
+  filter(County =="Bronx County"|County == "New York County"| County =="Richmond County"| County =="Kings County"| County =="Queens County")
+shape <- read_sf("NYC School District Boundaries/geo_export_76365b75-76b3-40f2-b108-28247da0ec5d.shp")
+
+```
+
+
+
+```{r}
+cleanschool <- data_school%>% 
+  mutate(Borough = str_sub(dbn, 3, 3), schooldist = str_sub(dbn, 1, 2))%>%
+  mutate(schooldist=as.numeric(schooldist),
+         BoroughName = fct_recode(Borough,
+                                      Manhattan = "M",
+                                      Kings = "K", 
+                                      Queens = "Q", 
+                                      Bronx = "X",
+                                      Richmond = "R"))%>%
+  mutate(School=tolower(school_name))
+
+cleanrank <- data_rank%>%
+  select(`Rank (2018-19)`,School,Zip,County)%>%
+  mutate(School = tolower(School))
+
+shape <-shape%>%arrange(schooldist)
+shape <-shape[-11,]
+
+
+```
+
+
+
+```{r}
+ggplot(cleanschool,aes(fct_infreq(BoroughName)))+
+  geom_bar(color="blue",fill="lightblue")+
+  geom_text(aes(label=..count..), stat = "count", vjust = 1.5)+
+  labs(title="Total Number of High School in NYC", x="Borough Name")
+```
+
+We thought that New York high schools might be largely concentrated in Manhattan, just like universities. But the truth is different. In this dataset, there are 487 high schools, and from the bar chart above, we could find that the kings County has the most high schools, followed by the Bronx County, the Manhattan County and the Queens County. The Richmond County has the least high schools and there is a huge gap between the number of high schools in the Queens County and the Richmond County.
+
+
+
+```{r}
+area <-cleanschool%>%
+  select(BoroughName,schooldist)%>%
+  unique()%>%
+  left_join(shape)%>%
+  select(schooldist,BoroughName,shape_area)%>%
+  group_by(BoroughName)%>%
+  summarize(area=sum(shape_area))
+
+NoHS <-cleanschool%>%
+  select(BoroughName,School)%>%
+  group_by(BoroughName)%>%
+  summarize(Total=n())%>%
+  left_join(area)%>%
+  mutate(covered=area/Total/1000)%>%
+  arrange(desc(covered))
+
+ggplot(NoHS,aes(x=factor(BoroughName,levels = NoHS$BoroughName),y=covered))+
+  geom_col(color="blue",fill="lightblue")+
+  labs(title="Average area a school need to cover", x="Borough Name")
+```
+
+In the graph above, we aim to Know the average area the a school in different districts need to cover, calculating by the ratio of area of district and total number of schools in that district. We found that a school in the Richmond County need to cover the largest area and there is a huge gap between the Richmond County and any other county. The Queens County, the Kings County, the Bronx County and Manhattan are followed.
+
+Based on the two bar charts above, we could find that a school in the Richmond County need to cover since the number of schools in the Richmond County is such fewer than other county. The Manhattan County does not has the most high schools, but a school in the Manhattan County need to cover the least area since the number of high schools is more than some other counties.
+
+
+## Education Quality Distribution in NYC
+
+Secondly, we combine school data with ranking data and aim to find the answer on the following questions: What is the distribution of varying ranking of High School in NYC? Are them distributed fairly?
+
+```{r}
+distr_of_school<- cleanschool%>%group_by(schooldist)%>%summarize(Total=n())
+joinallschool <- distr_of_school%>%left_join(shape)
+joinallschool <- st_sf(joinallschool)
+tm_shape(joinallschool) +
+  tm_polygons("Total",palette = "Blues") +
+  tm_text("schooldist", size = .5)+
+  tmap_options(check.and.fix = TRUE)
+```
+
+From the map above, we could find that District 2, belongs to the Manhattan County, has the most high schools,which is over 50. Then, District 10, belongs to the Bronx County, has the second most high schools, between 20 and 30. Other Districts have less than 20 high schools and each District has at least one high school.
+
+
+```{r}
+join_schoolrank <- cleanschool%>%left_join(cleanrank)%>%select(School,schooldist,BoroughName,Borough,`Rank (2018-19)`)%>%na.omit()%>%arrange(`Rank (2018-19)`)
+schoolrank <- join_schoolrank%>%
+  mutate(Rank_nyc = seq(1,nrow(join_schoolrank)))%>%
+  mutate(Top=
+  case_when(
+    Rank_nyc <= 10 ~ "Top 10",
+    Rank_nyc <= 30 & Rank_nyc > 10 ~ "Top 30",
+    Rank_nyc <= 50 & Rank_nyc > 30 ~ "Top 50",
+    Rank_nyc <= 100 & Rank_nyc > 50 ~ "Top 100",
+    Rank_nyc > 100 ~ "Over 100"
+  ))
+schoolrank <- schoolrank%>%mutate(Top=factor(schoolrank$Top,levels = c("Over 100", "Top 100", "Top 50", "Top 30", "Top 10")))%>%
+  mutate(Top10 = ifelse(schoolrank$Rank_nyc<=10,1,0),
+         Top30 = ifelse(schoolrank$Rank_nyc<=30,1,0),
+         Top50 = ifelse(schoolrank$Rank_nyc<=50,1,0),
+         Top100 = ifelse(schoolrank$Rank_nyc<=100,1,0))
+
+mosaic(Top ~ Borough, schoolrank,
+       direction = c("v", "h"),
+       rot_labels = c(0,0,0,0),
+       highlighting_fill = rev(brewer.pal(5, 'RdBu')))
+```
+
+Based on the mosaic plot above, we compare the rank level of high schools in different Counties. K represents for the Kings County, M represents for the Manhattan County, Q represents for the Queens County, R represents for the Richmond County and X represents for the Bronx County. Each color represent the increase number between two different level of ranks. 
+
+We could find that for all counties except the Richmond County, high schools over top 100 take the largest share, while school rank between 50 and 100 is the largest share in the Richmond County. For the Kings County, the Queens county and the Bronx County, rank of school between 50 and 100 is the second largest share. For the Manhattan County, the increase number of high school under rank 100 seems uniformly distributed. 
+
+
+```{r}
+distr_of_rank <- schoolrank%>%
+  select(School,schooldist,Top10,Top30,Top50,Top100)%>%
+  group_by(schooldist)%>%
+  summarize(Top10=sum(Top10),Top30=sum(Top30),
+            Top50=sum(Top50),Top100=sum(Top100))%>%
+  pivot_longer(names_to = "Type", values_to = "Number", cols = Top10:Top100)
+
+distr_of_rank[distr_of_rank == 0] <- NA
+              
+faceting <- distr_of_rank%>%
+  mutate(Type=factor(distr_of_rank$Type,levels = c( "Top10", "Top30", "Top50", "Top100")))%>%
+  right_join(shape)
+faceting <- st_sf(faceting)
+
+tm_shape(faceting) +
+  tm_polygons("Number",palette = "Blues") +
+  tm_facets(by ="Type") +
+  tm_text("schooldist", size = .5)+
+  tmap_options(check.and.fix = TRUE)
+```
+
+Maps above show the distribution of high school in varying ranks. For top 10 high schools, 5 of them located in District 2, other 5 high school located in District 3, 10, 13, 14 and 28. For top 30 high schools, District 2 contains the most high schools, followed by District 3. Others located in districts belong to each County except the Richmond County. For top 50 high schools, over 10 of them located in District 2, and the Richmond County still does not contain a high school. For top 100 high schools, over 15 of them located in District 2, followed by District 28 belongs to the Queens County. District 8, 15, 16, 18, 19, 23, 29 do not have top 100 high schools.  
+
+
+
+```{r}
+distr_of_rank <- schoolrank%>%
+  select(School,schooldist,Top10,Top30,Top50,Top100)%>%
+  group_by(schooldist)%>%
+  summarize(Top10=sum(Top10)/10,Top30=sum(Top30)/30,
+            Top50=sum(Top50)/50,Top100=sum(Top100)/100)%>%
+  pivot_longer(names_to = "Type", values_to = "Percent", cols = Top10:Top100)
+distr_of_rank[distr_of_rank == 0] <- NA
+
+faceting <- distr_of_rank%>%mutate(Type=factor(distr_of_rank$Type,levels = c( "Top10", "Top30", "Top50", "Top100")))%>%right_join(shape)
+faceting <- st_sf(faceting)
+
+tm_shape(faceting) +
+  tm_polygons("Percent",palette = "Blues") +
+  tm_facets(by ="Type") +
+  tm_text("schooldist", size = .5)+
+  tmap_options(check.and.fix = TRUE)
+```
+
+Maps above show the percentage of high school in varying ranks. We could find that District 2 always contains the highest percentage of the high-quality high schools, but this advantage becomes less obvious as the number of schools increases. 
+
+
+## The Impact of Varying-ranking High School Education Quality
+
+In the previous two sections, it is easy to see that the quality of education varies from different boroughs and school districts. Then we want to figure out how much of a gap there is between students at different levels of education. Will it really affect future study of students? 
+Avoiding replacement, “Top 10” level includes schools with Ranking 1 to 10, “Top 50” level shows the increasing school from “Top 10” and includes schools with Ranking 11 to 50, and the same with “Top 100” and “Over 100”.
+
+
+```{r}
+join_q2 <-cleanschool%>%
+  left_join(cleanrank)%>%
+  filter(!is.na(`Rank (2018-19)`))%>%
+  arrange(`Rank (2018-19)`)
+
+q2 <- join_q2%>%
+  mutate(Rank_nyc = seq(1,nrow(join_schoolrank)))%>%
+  mutate(Top=case_when(
+    Rank_nyc <= 10 ~ "Top 10",
+    Rank_nyc <= 50 & Rank_nyc > 10 ~ "Top 50",
+    Rank_nyc <= 100 & Rank_nyc > 50 ~ "Top 100",
+    Rank_nyc > 100 ~ "Over 100"
+  ),
+  survey = (survey_pp_RI+survey_pp_CT+survey_pp_SE+survey_pp_ES+survey_pp_SF+survey_pp_TR)/6, 
+  grad_rate = (n_grad_pct_4_all*val_grad_pct_4_all+n_grad_pct_6_all*val_grad_pct_6_all)/(n_grad_pct_4_all+n_grad_pct_6_all))
+
+sat <- q2%>%
+  select(dbn,Rank_nyc,val_mean_score_sat_math_all,val_mean_score_sat_writ_all,Top)%>%
+  na.omit()%>%
+  mutate(Top = factor(Top,levels = c("Top 10","Top 50","Top 100","Over 100")))
+```
+
+
+
+```{r}
+ggplot(sat,aes(x = fct_rev(Top),y = val_mean_score_sat_math_all))+
+  geom_boxplot(fill = "lightblue")+
+  coord_flip()+
+  labs(x="Rank",y="Score",title="Boxplot of SAT math score with different School Rank")
+
+ggplot(sat,aes(x=val_mean_score_sat_math_all, y=fct_rev(Top))) +
+  geom_density_ridges(fill = "lightblue", alpha = .5, scale = 1) +
+  labs(y="Rank",x="Score",title="Ridgeline of SAT math score with different School Rank")
+
+ggplot(sat,aes(x = fct_rev(Top),y = val_mean_score_sat_writ_all))+
+  geom_boxplot(fill = "lightblue")+
+  coord_flip()+
+  labs(x="Rank",y="Score",title="Boxplot of SAT writing score with different School Rank")
+
+ggplot(sat,aes(x=val_mean_score_sat_writ_all, y=fct_rev(Top))) +
+  geom_density_ridges(fill = "lightblue", alpha = .5, scale = 1) +
+  labs(y="Rank",x="Score",title="Ridgeline of SAT writing score with different School Rank")
+
+
+```
+
+The SAT is a standardized test widely used for college admissions in the United States.And SAT score consists of two components: 1) Math and 2) Evidence-based Reading and Writing (ERW). Each component is scored from 200 to 800 points. A higher SAT score means a better chance of getting into a top-ranked college. So SAT scores are an important part of a high school's education.
+
+For sat math scores, from the boxplot above, we can see that there really is a big gap between the different ranked schools. The higher the ranked schools, the better math scores students can get. Top10 high schools have a mode math score of over 700, but the over100 high schools have a mode score of only 425. And top50 students have a wide range of scores, with the lowest score being 475 and the highest score being 725. From the ridgeline, we could find that the higher the ranking level, the more volatile the distribution of grades. It suggests that the higher the ranking level, the larger educational quality gap between schools.
+
+The distribution of writing scores is essentially the same as for math score. While we knew that performance would vary from one ranked school to another, we didn't know that there would be such a significant difference. The top 25% of students at over100 schools can only reach the bottom 25% of the top50.
+
+
+## Impact of Covid on attendance
+
+Once we had an understanding of the geographic distribution of high schools, the rankings, we wanted to find out if Covid had an impact on high schools. We will analyze the change in high school attendance in 2020 and then compare the number of Covid infections to draw conclusions.
+
+```{r}
+attendance <- read.csv("2018-2021_Daily_Attendance_by_School.csv")
+
+data <- attendance %>% 
+  group_by(Date) %>%
+  summarise(Enrolled = sum(Enrolled), Present = sum(Present), Absent = sum(Absent))
+
+data$Date <- as.Date(data$Date, "%m/%d/%y")
+
+library(reshape2)
+data_long <- melt(data, id.vars = "Date")
+ggplot(data_long, aes(Date, value, col=variable))+
+  geom_line()+
+  scale_x_date(date_breaks = "1 month",
+               date_labels = "%m/%y")
+
+```
+
+The red line represents the total number of enrolled, green represents the number of participants, and blue represents the number of absentees. From the above time series, we can see that there is a clear abnormal change from June to September. According to the School Year Calendar of nyc department of education, we know that there are some vacation dates for school, 2/21-2/25 is Midwinter Recess, school closed, 6/ 27-9/1 is summer break and 11/25 is Thanksgiving break. It is normal to see a sharp increase in absence during these holiday days. However, from February to April, we can still see fluctuations in the number of absences, so we will focus on the analysis of attendance from February to April later
+
+
+```{r}
+covid <- read.csv("cases-by-day.csv")
+
+covid$date_of_interest <- as.Date(covid$date_of_interest, "%m/%d/%Y")
+
+covid <- covid %>% 
+  select(`date_of_interest`, `CASE_COUNT`, `BX_CASE_COUNT`, `BK_CASE_COUNT`, `MN_CASE_COUNT`,`QN_CASE_COUNT`, `SI_CASE_COUNT`) %>% 
+  rename(Date = date_of_interest,
+         Bronx_case = BX_CASE_COUNT,
+         Manhattan_case = MN_CASE_COUNT,
+         Queens_case = QN_CASE_COUNT,
+         Kings_case = BK_CASE_COUNT,
+         Richmonds_case = SI_CASE_COUNT) %>% 
+  filter(Date < "2021-01-01")
+
+covid_long <- melt(covid, id.vars = "Date")
+ggplot(covid_long, aes(x = Date, y = value, col = variable))+
+  geom_line()+
+  scale_x_date(date_breaks = "1 month", date_labels = "%m/%y")
+
+```
+
+The y-axis represents the number of covid cases confirmed per day, CASE_COUNT represents the number of cases confirmed in New York City as a whole, and the other colors represent the number of cases in each borough. The time series chart above shows that March and April are the months when the number of Covid daily infections is increasing rapidly, which corresponds exactly to the situation when the high school attendance rate starts to change in March and April
+
+
+```{r}
+data$rate <- data$Present / data$Enrolled
+
+ggplot(data, aes(Date, rate))+
+  geom_line()+
+  scale_x_date(date_breaks = "1 month",
+               date_labels = "%m/%y")
+
+library(zoo)
+attendance$Date <- as.Date(attendance$Date, "%m/%d/%y")
+attendance$monthly <- as.yearmon(attendance$Date)
+
+data_school <- attendance %>% 
+  filter(str_detect(monthly, c("Feb 2020", "Mar 2020", "Apr 2020"))) %>% 
+  mutate(rate = Present/Enrolled) %>% 
+  group_by(School.DBN) %>%
+  summarise(Enrolled = sum(Enrolled), Present = sum(Present), Absent = sum(Absent), rate = mean(rate))
+
+data_school$area <- data_school$School.DBN
+data_school$area[which(str_detect(data_school$area, "M"))] <- "Mahattan"
+data_school$area[which(str_detect(data_school$area, "K"))] <- "Kings" 
+data_school$area[which(str_detect(data_school$area, "X"))] <- "Bronx"
+data_school$area[which(str_detect(data_school$area, "Q"))] <- "Queens"
+data_school$area[which(str_detect(data_school$area, "R"))] <- "Richmond"
+
+
+g <- ggplot(data_school, aes(School.DBN, rate))+
+  geom_point(aes(color = area), size = 1)
+g
+# 
+# library(plotly)
+# ggplotly(g)
+
+
+```
+
+The attendance rate calculation also validates our previous time series plot. We calculated the average attendance of each school in 2020 and wanted to see how many schools had lower attendance rate. The dot plot allows us to clearly see that most schools have attendance rates above 0.7, so we will then focus the analysis on schools with attendance rates less than 0.7. 
+
+
+
+```{r}
+data_school_low <- data_school %>% 
+  filter(rate <= 0.7)
+
+# data_school_low
+ggplot(data_school_low, aes(rate, reorder(School.DBN, rate)))+
+  geom_point()+
+  facet_grid(area~., scales = "free_y", space = "free_y")+
+  theme_linedraw()+
+  ggtitle("Schools have low attendance rate during Covid")+
+  labs(x = "attendance rate", y = "School")
+```
+
+The total number of schools with an average attendance rate of less than 0.7 in 2020 is 45, and when we divide these schools by region, we find that Kings has more schools with low attendance rates, while Richmond has only one, which may be related to the geographic distribution of high schools we analyzed earlier, with more high schools in Kings but fewer in Richmond. However, there is one school in Manhattan with a surprisingly low attendance rate of 0.4.

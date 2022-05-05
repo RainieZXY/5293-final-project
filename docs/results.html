@@ -52,6 +52,10 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/parallel-coordinates-2.1.8/parcoords.css" rel="stylesheet" />
+<script src="libs/parcoords-binding-1.0.0/parcoords.js"></script>
+<script src="libs/d3-5.16.0/d3.min.js"></script>
 
 
 
@@ -73,15 +77,27 @@
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources<span></span></a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#data-sources-1"><i class="fa fa-check"></i><b>2.1</b> 2. Data sources<span></span></a></li>
-</ul></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources<span></span></a></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation<span></span></a></li>
-<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a></li>
-<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a></li>
+<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values<span></span></a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="missing-values.html"><a href="missing-values.html#by-value"><i class="fa fa-check"></i><b>4.0.1</b> 4.3 By value<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results<span></span></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#allocation-of-educational-resources-in-nyc"><i class="fa fa-check"></i><b>5.1</b> Allocation of Educational Resources in NYC<span></span></a></li>
+<li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#education-quality-distribution-in-nyc"><i class="fa fa-check"></i><b>5.2</b> Education Quality Distribution in NYC<span></span></a></li>
+<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#the-impact-of-varying-ranking-high-school-education-quality"><i class="fa fa-check"></i><b>5.3</b> The Impact of Varying-ranking High School Education Quality<span></span></a></li>
+<li class="chapter" data-level="5.4" data-path="results.html"><a href="results.html#impact-of-covid-on-attendance"><i class="fa fa-check"></i><b>5.4</b> Impact of Covid on attendance<span></span></a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component<span></span></a></li>
-<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion<span></span></a></li>
+<li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion<span></span></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="conclusion.html"><a href="conclusion.html#summary-of-studies-of-the-datasets"><i class="fa fa-check"></i><b>7.1</b> summary of studies of the datasets<span></span></a></li>
+<li class="chapter" data-level="7.2" data-path="conclusion.html"><a href="conclusion.html#limitation"><i class="fa fa-check"></i><b>7.2</b> Limitation：<span></span></a></li>
+<li class="chapter" data-level="7.3" data-path="conclusion.html"><a href="conclusion.html#future-directions"><i class="fa fa-check"></i><b>7.3</b> Future directions:<span></span></a></li>
+<li class="chapter" data-level="7.4" data-path="conclusion.html"><a href="conclusion.html#lessons-learned"><i class="fa fa-check"></i><b>7.4</b> Lessons Learned:<span></span></a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -103,7 +119,60 @@
             <section class="normal" id="section-">
 <div id="results" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Results<a href="results.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="allocation-of-educational-resources-in-nyc" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Allocation of Educational Resources in NYC<a href="results.html#allocation-of-educational-resources-in-nyc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>First, we will analyze the allocation of educational resources of high schools in NYC. There are several detailed questions we will focus: Which borough are most high schools located in? Based on the area of each county, is the school density the same? Is there difference of the average area a school need to cover? Is every school district having the same number of high schools?</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>We thought that New York high schools might be largely concentrated in Manhattan, just like universities. But the truth is different. In this dataset, there are 487 high schools, and from the bar chart above, we could find that the kings County has the most high schools, followed by the Bronx County, the Manhattan County and the Queens County. The Richmond County has the least high schools and there is a huge gap between the number of high schools in the Queens County and the Richmond County.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>In the graph above, we aim to Know the average area the a school in different districts need to cover, calculating by the ratio of area of district and total number of schools in that district. We found that a school in the Richmond County need to cover the largest area and there is a huge gap between the Richmond County and any other county. The Queens County, the Kings County, the Bronx County and Manhattan are followed.</p>
+<p>Based on the two bar charts above, we could find that a school in the Richmond County need to cover since the number of schools in the Richmond County is such fewer than other county. The Manhattan County does not has the most high schools, but a school in the Manhattan County need to cover the least area since the number of high schools is more than some other counties.</p>
+</div>
+<div id="education-quality-distribution-in-nyc" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Education Quality Distribution in NYC<a href="results.html#education-quality-distribution-in-nyc" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Secondly, we combine school data with ranking data and aim to find the answer on the following questions: What is the distribution of varying ranking of High School in NYC? Are them distributed fairly?</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>From the map above, we could find that District 2, belongs to the Manhattan County, has the most high schools,which is over 50. Then, District 10, belongs to the Bronx County, has the second most high schools, between 20 and 30. Other Districts have less than 20 high schools and each District has at least one high school.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Based on the mosaic plot above, we compare the rank level of high schools in different Counties. K represents for the Kings County, M represents for the Manhattan County, Q represents for the Queens County, R represents for the Richmond County and X represents for the Bronx County. Each color represent the increase number between two different level of ranks.</p>
+<p>We could find that for all counties except the Richmond County, high schools over top 100 take the largest share, while school rank between 50 and 100 is the largest share in the Richmond County. For the Kings County, the Queens county and the Bronx County, rank of school between 50 and 100 is the second largest share. For the Manhattan County, the increase number of high school under rank 100 seems uniformly distributed.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Maps above show the distribution of high school in varying ranks. For top 10 high schools, 5 of them located in District 2, other 5 high school located in District 3, 10, 13, 14 and 28. For top 30 high schools, District 2 contains the most high schools, followed by District 3. Others located in districts belong to each County except the Richmond County. For top 50 high schools, over 10 of them located in District 2, and the Richmond County still does not contain a high school. For top 100 high schools, over 15 of them located in District 2, followed by District 28 belongs to the Queens County. District 8, 15, 16, 18, 19, 23, 29 do not have top 100 high schools.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>Maps above show the percentage of high school in varying ranks. We could find that District 2 always contains the highest percentage of the high-quality high schools, but this advantage becomes less obvious as the number of schools increases.</p>
+</div>
+<div id="the-impact-of-varying-ranking-high-school-education-quality" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> The Impact of Varying-ranking High School Education Quality<a href="results.html#the-impact-of-varying-ranking-high-school-education-quality" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the previous two sections, it is easy to see that the quality of education varies from different boroughs and school districts. Then we want to figure out how much of a gap there is between students at different levels of education. Will it really affect future study of students?
+Avoiding replacement, “Top 10” level includes schools with Ranking 1 to 10, “Top 50” level shows the increasing school from “Top 10” and includes schools with Ranking 11 to 50, and the same with “Top 100” and “Over 100”.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-22-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-22-2.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-22-3.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-22-4.png" width="672" /></p>
+<p>The SAT is a standardized test widely used for college admissions in the United States.And SAT score consists of two components: 1) Math and 2) Evidence-based Reading and Writing (ERW). Each component is scored from 200 to 800 points. A higher SAT score means a better chance of getting into a top-ranked college. So SAT scores are an important part of a high school’s education.</p>
+<p>For sat math scores, from the boxplot above, we can see that there really is a big gap between the different ranked schools. The higher the ranked schools, the better math scores students can get. Top10 high schools have a mode math score of over 700, but the over100 high schools have a mode score of only 425. And top50 students have a wide range of scores, with the lowest score being 475 and the highest score being 725. From the ridgeline, we could find that the higher the ranking level, the more volatile the distribution of grades. It suggests that the higher the ranking level, the larger educational quality gap between schools.</p>
+<p>The distribution of writing scores is essentially the same as for math score. While we knew that performance would vary from one ranked school to another, we didn’t know that there would be such a significant difference. The top 25% of students at over100 schools can only reach the bottom 25% of the top50.</p>
+</div>
+<div id="impact-of-covid-on-attendance" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Impact of Covid on attendance<a href="results.html#impact-of-covid-on-attendance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Once we had an understanding of the geographic distribution of high schools, the rankings, we wanted to find out if Covid had an impact on high schools. We will analyze the change in high school attendance in 2020 and then compare the number of Covid infections to draw conclusions.</p>
+<pre><code>## [1] &quot;/Users/zhangxinyu/5293-final-project&quot;</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>The red line represents the total number of enrolled, green represents the number of participants, and blue represents the number of absentees. From the above time series, we can see that there is a clear abnormal change from June to September. According to the School Year Calendar of nyc department of education, we know that there are some vacation dates for school, 2/21-2/25 is Midwinter Recess, school closed, 6/ 27-9/1 is summer break and 11/25 is Thanksgiving break. It is normal to see a sharp increase in absence during these holiday days. However, from February to April, we can still see fluctuations in the number of absences, so we will focus on the analysis of attendance from February to April later</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>The y-axis represents the number of covid cases confirmed per day, CASE_COUNT represents the number of cases confirmed in New York City as a whole, and the other colors represent the number of cases in each borough. The time series chart above shows that March and April are the months when the number of Covid daily infections is increasing rapidly, which corresponds exactly to the situation when the high school attendance rate starts to change in March and April</p>
+<pre><code>## # A tibble: 6 × 5
+##   Date       Enrolled Present Absent  rate
+##   &lt;date&gt;        &lt;int&gt;   &lt;int&gt;  &lt;int&gt; &lt;dbl&gt;
+## 1 2020-01-02   943218  799582 143313 0.848
+## 2 2020-01-02   931366  748026 182315 0.803
+## 3 2020-01-03   943532  854161  89047 0.905
+## 4 2020-01-03   931595  770132 161063 0.827
+## 5 2020-01-04   943633  848887  94416 0.900
+## 6 2020-01-06   931831  852523  78990 0.915</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-25-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p>The attendance rate calculation also validates our previous time series plot. We calculated the average attendance of each school in 2020 and wanted to see how many schools had lower attendance rate. The dot plot allows us to clearly see that most schools have attendance rates above 0.7, so we will then focus the analysis on schools with attendance rates less than 0.7.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>The total number of schools with an average attendance rate of less than 0.7 in 2020 is 45, and when we divide these schools by region, we find that Kings has more schools with low attendance rates, while Richmond has only one, which may be related to the geographic distribution of high schools we analyzed earlier, with more high schools in Kings but fewer in Richmond. However, there is one school in Manhattan with a surprisingly low attendance rate of 0.4.</p>
 
+</div>
 </div>
             </section>
 
